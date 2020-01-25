@@ -2,15 +2,16 @@ import 'dart:async';
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:giftlist/api/api_anime.dart';
 import 'package:giftlist/api/post_model.dart';
+import 'package:rxdart/rxdart.dart';
 
 class AnimeBloc implements BlocBase{
   ApiAnime anime;
   AnimeModel animes;
 
-  final StreamController <AnimeModel> _animeController = StreamController<AnimeModel>();
+  final BehaviorSubject <AnimeModel> _animeController = BehaviorSubject<AnimeModel>();
   Stream get outAnimes => _animeController.stream;
 
-  final StreamController <String> _searchController = StreamController<String>();
+  final BehaviorSubject <String> _searchController = BehaviorSubject<String>();
   Sink get inSearch => _searchController.sink;
 
 
