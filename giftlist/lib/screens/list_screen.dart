@@ -4,6 +4,8 @@ import 'package:giftlist/api/post_model.dart';
 import 'package:giftlist/bloc/favorite_bloc.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 
+import '../api/post_model.dart';
+
 class ListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -25,9 +27,13 @@ class ListPage extends StatelessWidget {
           ),
         ),
       ),
-      body: StreamBuilder<Map<String,AnimeModel>>(
+      body: StreamBuilder<Map<String,Results>>(
         stream: bloc.outFav,
         builder: (context,snapshot){
+          if (snapshot.data == null) {
+            return Container();
+          }
+
           return ListView(
             children: snapshot.data.values.map((a){
               return InkWell(
@@ -36,7 +42,7 @@ class ListPage extends StatelessWidget {
                     Container(
                       width: 100,
                       height: 50,
-                      child: Image.network(a.results[0].imageUrl),
+                      child: Image.network(a.imageUrl),
                     ),
                   ],
                 ),

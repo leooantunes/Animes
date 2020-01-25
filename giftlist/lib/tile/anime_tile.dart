@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:giftlist/api/post_model.dart';
 import 'package:giftlist/bloc/favorite_bloc.dart';
 
+import '../api/post_model.dart';
+
 class AnimeTile extends StatelessWidget {
   final Results anime;
 
@@ -49,7 +51,7 @@ class AnimeTile extends StatelessWidget {
                             style:
                                 TextStyle(fontSize: 20, color: Colors.white),
                           ),
-                          StreamBuilder<Map<String, AnimeModel>>(
+                          StreamBuilder<Map<String, Results>>(
                               stream: bloc.outFav,
                               initialData: {},
                               builder: (context, snapshot) {

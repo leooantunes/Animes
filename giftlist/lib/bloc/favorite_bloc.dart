@@ -5,12 +5,14 @@ import 'package:giftlist/api/post_model.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../api/post_model.dart';
+
 class FavoriteBloc implements BlocBase {
 
-  Map<String,AnimeModel> _favAnime = {};
+  Map<String,Results> _favAnime = {};
 
-  final BehaviorSubject<Map<String,AnimeModel>> _favController = BehaviorSubject();
-  Stream<Map<String,AnimeModel>> get outFav => _favController.stream;
+  final BehaviorSubject<Map<String,Results>> _favController = BehaviorSubject();
+  Stream<Map<String,Results>> get outFav => _favController.stream;
 
   FavoriteBloc(){
     SharedPreferences.getInstance().then((prefs){
@@ -28,7 +30,7 @@ class FavoriteBloc implements BlocBase {
     if(_favAnime.containsKey(anime.title)){
       _favAnime.remove(anime.title);
     }else{
-      _favAnime[anime.title] = anime as AnimeModel;
+      _favAnime[anime.title] = anime;
     }
     _favController.sink.add(_favAnime);
     _saveFav();

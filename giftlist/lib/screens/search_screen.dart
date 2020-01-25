@@ -36,6 +36,7 @@ class HomeSearch extends StatelessWidget {
         color: Color.fromRGBO(253, 146, 30, 1),
         alignment: Alignment.center,
         child: StreamBuilder(
+          initialData: null,
           stream: BlocProvider.of<AnimeBloc>(context).outAnimes,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
@@ -49,7 +50,9 @@ class HomeSearch extends StatelessWidget {
                 },
               );
             } else {
-              return Container();
+              return CircularProgressIndicator(
+                backgroundColor: Colors.white,
+              );
             }
           },
         ),

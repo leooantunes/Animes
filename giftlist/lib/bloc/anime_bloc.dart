@@ -22,10 +22,10 @@ class AnimeBloc implements BlocBase{
 
   void _search (String search) async{
     print(search);
+    _animeController.sink.add(null);
     animes = await anime.search(search);
     print(animes ?? 'erro');
     _animeController.sink.add(animes);
-    print(animes.results[1].title);
   }
 
   @override
