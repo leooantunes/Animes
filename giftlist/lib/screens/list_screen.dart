@@ -13,10 +13,12 @@ class ListPage extends StatelessWidget {
     final bloc = BlocProvider.of<FavoriteBloc>(context);
 
     return Scaffold(
+      backgroundColor: Color.fromRGBO(253, 146, 30, 1),
       appBar: GradientAppBar(
         backgroundColorStart: Color.fromRGBO(231, 40, 74, 1),
         backgroundColorEnd: Color.fromRGBO(253, 146, 30, 1),
         centerTitle: true,
+        leading: Container(),        
         iconTheme: IconThemeData(
           color: Colors.white,
         ),
@@ -34,16 +36,27 @@ class ListPage extends StatelessWidget {
             return Container();
           }
 
-          return ListView(
+          return ListView(    
+            padding: EdgeInsets.all(1),        
             children: snapshot.data.values.map((a){
-              return InkWell(
-                child: Row(
-                  children: <Widget>[
-                    Container(
-                      width: 100,
-                      height: 50,
-                      child: Image.network(a.imageUrl),
-                    ),
+              return Container(
+                padding: EdgeInsets.fromLTRB(3,0, 0,0),
+                margin: EdgeInsets.fromLTRB(3,0, 0 ,0),
+                child: Table(
+                  defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                  children: [
+                    TableRow(                                        
+                      children: [
+                        Container(
+                          child: Image.network(a.imageUrl),
+                          margin: EdgeInsets.fromLTRB(0,10,0,10),                      
+                        ),
+                        SizedBox(height: 0,),
+                        Text(a.title,style: TextStyle(fontSize: 18,color: Colors.white, fontWeight: FontWeight.bold),),
+                        SizedBox(height: 0,),
+                        Text(a.type,style: TextStyle(fontSize: 18,color: Colors.white, fontWeight: FontWeight.bold),),
+                      ],
+                    ),                   
                   ],
                 ),
               );

@@ -45,11 +45,18 @@ class AnimeTile extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Text(
-                            anime.title,
-                            textAlign: TextAlign.center,                           
-                            style:
-                                TextStyle(fontSize: 20, color: Colors.white),
+                          Flexible(
+                            child: Text(
+                              anime.title,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              softWrap: false,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
                           ),
                           StreamBuilder<Map<String, Results>>(
                               stream: bloc.outFav,
@@ -79,7 +86,10 @@ class AnimeTile extends StatelessWidget {
                       Text(
                         anime.synopsis,
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 15, color: Colors.white),
+                        style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
                       ),
                       SizedBox(
                         height: 20,

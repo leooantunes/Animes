@@ -14,6 +14,7 @@ class HomeSearch extends StatelessWidget {
         backgroundColorStart: Color.fromRGBO(231, 40, 74, 1),
         backgroundColorEnd: Color.fromRGBO(253, 146, 30, 1),
         centerTitle: true,
+        leading: Container(),
         iconTheme: IconThemeData(
           color: Colors.white,
         ),
