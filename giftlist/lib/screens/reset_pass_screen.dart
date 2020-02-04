@@ -1,19 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:giftlist/api/api_login.dart';
-import 'package:giftlist/api/api_response.dart';
-import 'package:giftlist/screens/account_screen.dart';
-import 'package:giftlist/screens/forgot_pass_screen.dart';
-import 'package:giftlist/screens/home_screen.dart';
+import 'package:giftlist/api/api_reset.dart';
+import 'package:giftlist/api/user_model.dart';
+import 'package:giftlist/screens/login_screen.dart';
+import 'package:gradient_app_bar/gradient_app_bar.dart';
 
-class LoginPage extends StatelessWidget {
-  final _login = TextEditingController();
-  final _senha = TextEditingController();
+class ResetPage extends StatelessWidget {
+  final _token = TextEditingController();
+  final _password = TextEditingController();
+  final _email = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+  final _scaffoldkey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldkey,
+      appBar: GradientAppBar(
+        backgroundColorStart: Color.fromRGBO(231, 40, 74, 1),
+        backgroundColorEnd: Color.fromRGBO(253, 146, 30, 1),
+        centerTitle: true,
+        iconTheme: IconThemeData(
+          color: Colors.white,
+        ),
+        title: Container(
+          child: Text(
+            "Cadastrar nova senha",
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+      ),
       body: Center(
         child: Container(
           decoration: BoxDecoration(
@@ -29,23 +45,18 @@ class LoginPage extends StatelessWidget {
           child: Form(
             key: _formKey,
             child: Container(
+              alignment: Alignment.bottomCenter,
               padding: EdgeInsets.all(16),
               child: ListView(
                 children: <Widget>[
-                  Image.asset(
-                    "images/logo.png",
-                    fit: BoxFit.contain,
-                    height: 300.0,
-                    width: 50.0,
-                  ),
                   SizedBox(
                     height: 16,
                   ),
                   TextFormField(
-                    controller: _login,
+                    controller: _email,
                     validator: (String text) {
                       if (text.isEmpty) {
-                        return "Digite o login";
+                        return "Digite um email válido";
                       } else {
                         return null;
                       }
@@ -53,8 +64,7 @@ class LoginPage extends StatelessWidget {
                     decoration: InputDecoration(
                       icon: Icon(Icons.person),
                       fillColor: Colors.white,
-                      labelText: "Login",
-                      hintText: "Digite o seu login",
+                      labelText: "Insira seu email",
                       labelStyle: TextStyle(
                         color: Colors.white,
                       ),
@@ -68,10 +78,10 @@ class LoginPage extends StatelessWidget {
                     height: 16,
                   ),
                   TextFormField(
-                    controller: _senha,
+                    controller: _password,
                     validator: (String text) {
                       if (text.isEmpty) {
-                        return "Digite a senha";
+                        return "Digite uma senha válida";
                       }
                       if (text.length < 3) {
                         return "A senha precisa ter mais de 3 digitos";
@@ -82,8 +92,31 @@ class LoginPage extends StatelessWidget {
                     obscureText: true,
                     decoration: InputDecoration(
                       icon: Icon(Icons.vpn_key),
-                      labelText: "Senha",
-                      hintText: "Digite a sua senha",
+                      labelText: "Digite sua nova senha",
+                      labelStyle: TextStyle(
+                        color: Colors.white,
+                      ),
+                      hintStyle: TextStyle(
+                        color: Colors.white,
+                        fontSize: 10,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  TextFormField(
+                    controller: _token,
+                    validator: (String text) {
+                      if (text.isEmpty) {
+                        return "Digite um token válido";
+                      } else {
+                        return null;
+                      }
+                    },
+                    decoration: InputDecoration(
+                      icon: Icon(Icons.email),
+                      labelText: "Digite seu token recebido no email",
                       labelStyle: TextStyle(
                         color: Colors.white,
                       ),
@@ -105,18 +138,31 @@ class LoginPage extends StatelessWidget {
                           return;
                         }
 
-                        String email = _login.text;
-                        String senha = _senha.text;
+                        String email = _email.text;
+                        String senha = _password.text;
+                        String codigo = _token.text;
 
-                        ApiResponse response = await ApiLogin.login(email, senha);
+                        User user =
+                            await ApiReset.reset(email,senha,codigo);
 
-                        if (response.ok) {
-                          Navigator.push(
+                        if (user != null) {
+                          _scaffoldkey.currentState.showSnackBar(SnackBar(
+                            content: Text("Nova senha cadastrada com sucesso"),
+                            backgroundColor: Colors.green,
+                            duration: Duration(seconds: 2),
+                          ));
+                          Future.delayed(Duration(seconds: 2)).then((_) {
+                            Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => HomePage()),
+                            MaterialPageRoute(builder: (context) => LoginPage()),
                           );
+                          });
                         } else {
-                          print("login incorreto");
+                           _scaffoldkey.currentState.showSnackBar(SnackBar(
+                            content: Text("Erro ao resetar a senha"),
+                            backgroundColor: Colors.red,
+                            duration: Duration(seconds: 2),
+                          ));
                         }
                       },
                       color: Colors.red,
@@ -125,38 +171,10 @@ class LoginPage extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(80.0)),
                       child: Text(
-                        "Login",
+                        "Enviar",
                         style: TextStyle(fontSize: 20),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    children: <Widget>[
-                      FlatButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => ForgotPage()),
-                          );
-                        },
-                        child: Text("Esqueci minha senha"),
-                        textColor: Colors.white,
-                      ),
-                      SizedBox(width: 100,),
-                      FlatButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => AccountPage()),
-                          );
-                        },
-                        child: Text("Criar conta"),
-                        textColor: Colors.white,
-                      ),
-                    ],
                   ),
                 ],
               ),
