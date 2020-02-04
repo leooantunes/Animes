@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:giftlist/api/api_cadastro.dart';
 import 'package:giftlist/api/api_response.dart';
-import 'package:giftlist/api/user_model.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 
 class AccountPage extends StatelessWidget {

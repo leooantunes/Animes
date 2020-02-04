@@ -29,7 +29,7 @@ class ApiCadastro{
       return ApiResponse.ok(user);
     }
 
-    ApiResponse.error("error");
+    return ApiResponse.error("error");
 
   }
 }

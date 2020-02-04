@@ -1,9 +1,10 @@
 import 'dart:convert';
+import 'package:giftlist/api/api_response.dart';
 import 'package:http/http.dart' as http;
 import 'package:giftlist/api/user_model.dart';
 
 class ApiReset{
-  static Future<User> reset(String email,String password,String token) async{
+  static Future<ApiResponse<User>> reset(String email,String password,String token) async{
     final url = 'http://app-apiusers.herokuapp.com/auth/reset_password';
 
     Map<String,String> headers = {
@@ -22,16 +23,12 @@ class ApiReset{
 
     Map mapResponse = json.decode(response.body);
 
-    String login = mapResponse["email"];
-    String senha = mapResponse["password"];
-    String codigo = mapResponse["token"];
-
-    final user = User.reset(login,senha,codigo);
+    final user = User.reset(mapResponse);
 
     if(response.statusCode == 200){
-      return user;
-    }else{
-      print("erro de login");
+      return ApiResponse.ok(user);
     }
+
+    return ApiResponse.error("error");
   }
 }

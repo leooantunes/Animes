@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:giftlist/api/api_reset.dart';
-import 'package:giftlist/api/user_model.dart';
+import 'package:giftlist/api/api_response.dart';
 import 'package:giftlist/screens/login_screen.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 
@@ -142,10 +142,10 @@ class ResetPage extends StatelessWidget {
                         String senha = _password.text;
                         String codigo = _token.text;
 
-                        User user =
+                        ApiResponse response =
                             await ApiReset.reset(email,senha,codigo);
 
-                        if (user != null) {
+                        if (response.ok) {
                           _scaffoldkey.currentState.showSnackBar(SnackBar(
                             content: Text("Nova senha cadastrada com sucesso"),
                             backgroundColor: Colors.green,

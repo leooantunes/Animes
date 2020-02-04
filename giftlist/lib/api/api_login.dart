@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:giftlist/api/user_model.dart';
 
 class ApiLogin {
-  static Future<ApiResponse<User>>login(String email, String password) async{
+  static Future<ApiResponse<User>> login(String email, String password) async{
     final url = 'http://app-apiusers.herokuapp.com/auth/authenticate';
 
     Map<String,String> headers = {
@@ -28,6 +28,6 @@ class ApiLogin {
       return ApiResponse.ok(user);
     }
 
-    ApiResponse.error("error");
+    return ApiResponse.error("error");
   }
 }
